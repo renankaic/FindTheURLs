@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class CrawledUrlService {
 		return obj.orElse(null);	
 	}
 	
+	public List<CrawledUrl> findAll() {
+		List<CrawledUrl> list = crawledUrlRepository.findAll();
+		return list;
+	}
+	
 	public CrawledUrl findByUrl(URL url) {
 		Optional<CrawledUrl> obj = crawledUrlRepository.findByUrl(url);
 		return obj.orElse(null);
@@ -42,13 +48,14 @@ public class CrawledUrlService {
 		}
 	}
 	
-	public CrawledUrl saveCrawledUrl(URL objUrl, HashSet<String> urls) {
+	public CrawledUrl saveCrawledUrl(URL objUrl, HashSet<String> urls, String siteName) {
 		
 		//Checks if the URL already exists in database
 		CrawledUrl crawledUrl = this.findByUrl(objUrl);
 		if ( crawledUrl != null ) {
 			
 			//Clear all the found URLs before to add the new ones
+			crawledUrl.setSiteName(siteName);
 			crawledUrl.getFoundUrls().clear();
 			crawledUrl.setLastUpdate(new Date());
 			
@@ -56,6 +63,7 @@ public class CrawledUrlService {
 			
 			//Creates a new obj to record in database
 			crawledUrl = new CrawledUrl();
+			crawledUrl.setSiteName(siteName);
 			crawledUrl.setUrl(objUrl);
 			crawledUrl.setCreationDate(new Date());
 			crawledUrl.setLastUpdate(crawledUrl.getCreationDate());

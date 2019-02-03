@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -25,12 +27,18 @@ public class CrawledUrl implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	private String siteName;
 	private URL url;
+	
+
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
 	private Date creationDate;
+	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
 	private Date lastUpdate;
 	
-	@OneToMany(orphanRemoval=true)
 	@JsonIgnore
+	@OneToMany(orphanRemoval = true, mappedBy = "crawledUrl", fetch = FetchType.EAGER)
 	@Cascade(CascadeType.ALL)
 	private Set<FoundUrl> foundUrls = new HashSet<FoundUrl>();
 	
@@ -38,11 +46,13 @@ public class CrawledUrl implements Serializable {
 		
 	}
 
-	public CrawledUrl(Long id, URL url, Date creation_date) {
+	public CrawledUrl(Long id, String siteName, URL url, Date creationDate, Date lastUpdate) {
 		super();
 		this.id = id;
+		this.siteName = siteName;
 		this.url = url;
-		this.creationDate = creation_date;
+		this.creationDate = creationDate;
+		this.lastUpdate = lastUpdate;
 	}
 
 	public Long getId() {
@@ -51,6 +61,14 @@ public class CrawledUrl implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
 	}
 
 	public URL getUrl() {
@@ -65,8 +83,8 @@ public class CrawledUrl implements Serializable {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creation_date) {
-		this.creationDate = creation_date;
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public Date getLastUpdate() {
@@ -92,6 +110,7 @@ public class CrawledUrl implements Serializable {
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastUpdate == null) ? 0 : lastUpdate.hashCode());
+		result = prime * result + ((siteName == null) ? 0 : siteName.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
@@ -120,6 +139,11 @@ public class CrawledUrl implements Serializable {
 				return false;
 		} else if (!lastUpdate.equals(other.lastUpdate))
 			return false;
+		if (siteName == null) {
+			if (other.siteName != null)
+				return false;
+		} else if (!siteName.equals(other.siteName))
+			return false;
 		if (url == null) {
 			if (other.url != null)
 				return false;
@@ -127,6 +151,8 @@ public class CrawledUrl implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 
 		
 	

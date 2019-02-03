@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.renankaic.findtheurls.domain.CrawledUrl;
+import com.renankaic.findtheurls.domain.dto.CrawledUrlDTO;
 import com.renankaic.findtheurls.domain.dto.CrawlerParameterDTO;
 import com.renankaic.findtheurls.services.CrawledUrlService;
 import com.renankaic.findtheurls.services.crawlers.SpiderWebCrawler;
 
 @RestController
 @RequestMapping(value="/urls")
-public class UrlResource {
+public class CrawlerResource {
 	
 	@Autowired
 	private CrawledUrlService crawledUrlService;
@@ -32,19 +33,34 @@ public class UrlResource {
 	@Autowired
 	private SpiderWebCrawler crawlerSpider;
 	
-	@GetMapping(value="/{id}")
-	public ResponseEntity<?> find(@PathVariable Long id) {		
-		CrawledUrl obj = crawledUrlService.find(id);
-		return ResponseEntity.ok().body(obj);		
+	@GetMapping()
+	public ResponseEntity<List<CrawledUrl>> list() {
+		
+		//List all the Crawled Urls
+		List<CrawledUrl> list = crawledUrlService.findAll();
+		return ResponseEntity.ok().body(list);
+		
 	}
 	
-	@GetMapping()
-	public List<CrawledUrl> list() {
-		return null;
-	}
+	@GetMapping(value="/{id}")
+	public ResponseEntity<CrawledUrlDTO> find(@PathVariable Long id) {	
 		
+		//List a specific Crawled URL by Id
+		CrawledUrl obj = crawledUrlService.find(id);
+		
+		if( obj == null)
+			return ResponseEntity.notFound().build();
+		
+		//Transform to DTO
+		CrawledUrlDTO crawledUrlDTO = new CrawledUrlDTO(obj, obj.getFoundUrls());
+		
+		return ResponseEntity.ok().body(crawledUrlDTO);	
+		
+	}
+				
+			
 	@PostMapping(value="/find/crawler")
-	public ResponseEntity<CrawledUrl> findAllByCrawler(@RequestBody CrawlerParameterDTO crawlerDto){
+	public ResponseEntity<CrawledUrlDTO> findAllByCrawler(@RequestBody CrawlerParameterDTO crawlerDto){
 		
 		//This method use a simple type of Crawler to search some available links in a
 		//specified URL
@@ -56,9 +72,12 @@ public class UrlResource {
 			
 			URL objUrl = new URL(crawlerDto.getUrl());			
 			HashSet<String> urls = crawledUrlService.findTheUrls(objUrl, crawlerDto.getDepth());						
-			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls);	
-						
-			return ResponseEntity.ok().body(savedCrawledUrl);
+			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls, crawlerDto.getSiteName());	
+		
+			//Transform to DTO
+			CrawledUrlDTO crawledUrlDTO = new CrawledUrlDTO(savedCrawledUrl, savedCrawledUrl.getFoundUrls());
+		
+			return ResponseEntity.ok().body(crawledUrlDTO);
 			
 		} catch (MalformedURLException e) {
 			
@@ -70,7 +89,7 @@ public class UrlResource {
 	}
 	
 	@PostMapping(value="/find/spider")
-	public ResponseEntity<CrawledUrl> findAllBySpider(@RequestBody CrawlerParameterDTO crawlerDto){
+	public ResponseEntity<CrawledUrlDTO> findAllBySpider(@RequestBody CrawlerParameterDTO crawlerDto){
 		
 		//This method use a little more sophisticated way to find the available URLs in the
 		//specified URL
@@ -80,9 +99,12 @@ public class UrlResource {
 			
 			URL objUrl = new URL(crawlerDto.getUrl());			
 			HashSet<String> urls = crawlerSpider.search(objUrl.toString(), crawlerDto.getDepth()).getLinks();
-			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls);	
+			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls,crawlerDto.getSiteName());
 			
-			return ResponseEntity.ok().body(savedCrawledUrl);			
+			//Transform to DTO
+			CrawledUrlDTO crawledUrlDTO = new CrawledUrlDTO(savedCrawledUrl, savedCrawledUrl.getFoundUrls());
+		
+			return ResponseEntity.ok().body(crawledUrlDTO);		
 			
 		} catch (Exception e) {
 			// TODO: handle exception

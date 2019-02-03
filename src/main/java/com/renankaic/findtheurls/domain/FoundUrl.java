@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class FoundUrl implements Serializable{
 	
@@ -24,6 +26,7 @@ public class FoundUrl implements Serializable{
 	private URL url;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="crawledurl_id")
 	private CrawledUrl crawledUrl;
 	

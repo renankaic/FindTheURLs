@@ -29,8 +29,7 @@ public class SpiderWebCrawler {
 	   */
 	public SpiderLegWebCrawlerService search(String url, Integer numberOfPagesToSearch) {
 		
-		//Clear all links before start to crawl
-		spiderLeg.getLinks().clear();
+		resetSpiderLeg();
 		
 		while(this.pagesVisited.size() < numberOfPagesToSearch)
         {
@@ -76,6 +75,15 @@ public class SpiderWebCrawler {
 		} while( this.pagesVisited.contains(nextUrl) );
 		this.pagesVisited.add(nextUrl);
 		return nextUrl;
+		
+	}
+	
+	private void resetSpiderLeg() {
+		
+		//Clear all links before start to crawl
+		spiderLeg.getLinks().clear();
+		pagesVisited.clear();
+		pagesToVisit.clear();
 		
 	}
 	

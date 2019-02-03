@@ -1,4 +1,4 @@
-package com.renankaic.findtheurls;
+package com.renankaic.findtheurls.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
