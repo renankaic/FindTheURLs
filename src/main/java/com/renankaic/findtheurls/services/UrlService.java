@@ -3,12 +3,14 @@ package com.renankaic.findtheurls.services;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renankaic.findtheurls.crawlers.BasicWebCrawler;
 import com.renankaic.findtheurls.domain.Url;
 import com.renankaic.findtheurls.repositories.UrlRepository;
 
@@ -17,6 +19,9 @@ public class UrlService {
 	
 	@Autowired
 	private UrlRepository repository;
+	
+	@Autowired
+	BasicWebCrawler basicWebCrawler;
 	
 	public Url find(Integer id) {		
 		Optional<Url> obj = repository.findById(id);
@@ -48,4 +53,14 @@ public class UrlService {
 		
 	}
 
+	public HashSet<String> findTheUrls( URL url ) {	
+		
+		//Gets and clear all the strings inside the HashSet
+		//If I don't do this, for some reason, the HashSet comes with
+		//the previous found URLs
+		basicWebCrawler.getLinks().clear();
+		basicWebCrawler.getPageLinks(url.toString(), 3);
+		return basicWebCrawler.getLinks();
+		
+	}
 }
