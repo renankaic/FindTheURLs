@@ -28,6 +28,8 @@ public class CrawledUrlDTO implements Serializable{
 	
 	public CrawledUrlDTO toDto(CrawledUrl crawledUrl) {
 		
+		//Transform a CrawledURL to a CrawledUrlDTO which customize the JSON that will be sent as response from a request
+		
 		this.crawledUrl = crawledUrl;
 		this.foundUrls = crawledUrl.getFoundUrls();
 		return this;

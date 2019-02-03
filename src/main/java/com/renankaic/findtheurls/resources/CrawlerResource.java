@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +43,8 @@ public class CrawlerResource {
 		
 	}
 	
-	@GetMapping(value="/{id}")
-	public ResponseEntity<CrawledUrlDTO> find(@PathVariable Long id) {	
+	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CrawledUrlDTO> listFoundUrls(@PathVariable Long id) {	
 		
 		//List a specific Crawled URL by Id
 		CrawledUrl obj = crawledUrlService.find(id);
@@ -59,7 +60,7 @@ public class CrawlerResource {
 	}
 				
 			
-	@PostMapping(value="/find/crawler")
+	@PostMapping(value="/find/crawler",  produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CrawledUrlDTO> findAllByCrawler(@RequestBody CrawlerParameterDTO crawlerDto){
 		
 		//This method use a simple type of Crawler to search some available links in a
@@ -88,7 +89,7 @@ public class CrawlerResource {
 		
 	}
 	
-	@PostMapping(value="/find/spider")
+	@PostMapping(value="/find/spider",  produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CrawledUrlDTO> findAllBySpider(@RequestBody CrawlerParameterDTO crawlerDto){
 		
 		//This method use a little more sophisticated way to find the available URLs in the
