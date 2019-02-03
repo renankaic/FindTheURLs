@@ -2,40 +2,47 @@ package com.renankaic.findtheurls.domain;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Url implements Serializable {
-
+public class FoundUrl implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	private URL url;
-	private Date creation_date;
+	private Long id;
 	
-	public Url() {
+	@Column(columnDefinition="varchar(1000)")
+	private URL url;
+	
+	@ManyToOne
+	@JoinColumn(name="crawledurl_id")
+	private CrawledUrl crawledUrl;
+	
+	public FoundUrl() {
 		
 	}
 
-	public Url(Integer id, URL url, Date creation_date) {
+	public FoundUrl(Long id, URL url, CrawledUrl crawledUrl) {
 		super();
 		this.id = id;
 		this.url = url;
-		this.creation_date = creation_date;
+		this.crawledUrl = crawledUrl;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -47,19 +54,19 @@ public class Url implements Serializable {
 		this.url = url;
 	}
 
-	public Date getCreation_date() {
-		return creation_date;
+	public CrawledUrl getCrawledUrl() {
+		return crawledUrl;
 	}
 
-	public void setCreation_date(Date creation_date) {
-		this.creation_date = creation_date;
+	public void setCrawledUrl(CrawledUrl crawledUrl) {
+		this.crawledUrl = crawledUrl;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((creation_date == null) ? 0 : creation_date.hashCode());
+		result = prime * result + ((crawledUrl == null) ? 0 : crawledUrl.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
@@ -73,11 +80,11 @@ public class Url implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Url other = (Url) obj;
-		if (creation_date == null) {
-			if (other.creation_date != null)
+		FoundUrl other = (FoundUrl) obj;
+		if (crawledUrl == null) {
+			if (other.crawledUrl != null)
 				return false;
-		} else if (!creation_date.equals(other.creation_date))
+		} else if (!crawledUrl.equals(other.crawledUrl))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -93,5 +100,5 @@ public class Url implements Serializable {
 	}
 	
 	
-	
+
 }

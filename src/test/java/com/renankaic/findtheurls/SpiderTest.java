@@ -1,5 +1,5 @@
-package com.renankaic.findtheurls.crawlers.test;
-import com.renankaic.findtheurls.crawlers.SpiderWebCrawler;
+package com.renankaic.findtheurls;
+import com.renankaic.findtheurls.services.crawlers.SpiderWebCrawler;
 
 public class SpiderTest {
 

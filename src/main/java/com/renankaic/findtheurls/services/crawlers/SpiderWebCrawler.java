@@ -1,4 +1,4 @@
-package com.renankaic.findtheurls.crawlers;
+package com.renankaic.findtheurls.services.crawlers;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -15,10 +15,10 @@ public class SpiderWebCrawler {
 	private List<String> pagesToVisit = new LinkedList<String>();
 	
 	@Autowired
-	private SpiderLegWebCrawler spiderLeg;
+	private SpiderLegWebCrawlerService spiderLeg;
 	
 	public SpiderWebCrawler() {
-		this.spiderLeg = new SpiderLegWebCrawler();
+		this.spiderLeg = new SpiderLegWebCrawlerService();
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class SpiderWebCrawler {
 	   * @param url
 	   *            - The starting point of the spider
 	   */
-	public SpiderLegWebCrawler search(String url, Integer numberOfPagesToSearch) {
+	public SpiderLegWebCrawlerService search(String url, Integer numberOfPagesToSearch) {
 		
 		//Clear all links before start to crawl
 		spiderLeg.getLinks().clear();
@@ -79,7 +79,7 @@ public class SpiderWebCrawler {
 		
 	}
 	
-	public SpiderLegWebCrawler getSpiderLeg() {
+	public SpiderLegWebCrawlerService getSpiderLeg() {
 		return this.spiderLeg;
 	}
 }	

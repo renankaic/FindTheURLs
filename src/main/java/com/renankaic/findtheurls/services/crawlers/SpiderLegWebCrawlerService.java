@@ -1,8 +1,7 @@
-package com.renankaic.findtheurls.crawlers;
+package com.renankaic.findtheurls.services.crawlers;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -12,7 +11,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpiderLegWebCrawler {
+public class SpiderLegWebCrawlerService {
 	
 	/*
 	 USER_AGENT so the web server thinks the robot is a normal web browser.
@@ -23,7 +22,7 @@ public class SpiderLegWebCrawler {
 	*/
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1";
     
-	private List<String> links = new LinkedList<String>(); // List of found URLs
+	private HashSet<String> links = new HashSet<String>(); // List of found URLs
 	private Document htmlDocument; // Document containg the HTML content
 	
 	/**
@@ -63,7 +62,7 @@ public class SpiderLegWebCrawler {
 		
 	}
 	
-	public List<String> getLinks() {
+	public HashSet<String> getLinks() {
 		
 		return this.links;
 		

@@ -5,13 +5,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.renankaic.findtheurls.services.UrlService;
+import com.renankaic.findtheurls.services.CrawledUrlService;
 
 @SpringBootApplication
 public class FindTheUrLsApplication implements CommandLineRunner{
 	
 	@Autowired
-	UrlService urlService;
+	CrawledUrlService urlService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(FindTheUrLsApplication.class, args);

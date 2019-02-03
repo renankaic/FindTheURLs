@@ -17,50 +17,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.renankaic.findtheurls.crawlers.SpiderWebCrawler;
-import com.renankaic.findtheurls.domain.Url;
-import com.renankaic.findtheurls.services.UrlService;
+import com.renankaic.findtheurls.domain.CrawledUrl;
+import com.renankaic.findtheurls.domain.dto.CrawlerParameterDTO;
+import com.renankaic.findtheurls.services.CrawledUrlService;
+import com.renankaic.findtheurls.services.crawlers.SpiderWebCrawler;
 
 @RestController
 @RequestMapping(value="/urls")
 public class UrlResource {
 	
 	@Autowired
-	private UrlService service;
+	private CrawledUrlService crawledUrlService;
 	
 	@Autowired
 	private SpiderWebCrawler crawlerSpider;
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {		
-		Url obj = service.find(id);
+	public ResponseEntity<?> find(@PathVariable Long id) {		
+		CrawledUrl obj = crawledUrlService.find(id);
 		return ResponseEntity.ok().body(obj);		
 	}
 	
 	@GetMapping()
-	public List<Url> list() {
+	public List<CrawledUrl> list() {
 		return null;
 	}
 		
 	@PostMapping(value="/find/crawler")
-	public ResponseEntity<?> findAllByCrawler(@RequestBody String url){
+	public ResponseEntity<CrawledUrl> findAllByCrawler(@RequestBody CrawlerParameterDTO crawlerDto){
 		
 		//This method use a simple type of Crawler to search some available links in a
 		//specified URL
+		//This one doesn't use "USER_AGENT". Some web servers will not allow to get
+		//all links on a page - findAllBySpider is better
 		//https://www.mkyong.com/java/jsoup-basic-web-crawler-example/
 		
 		try {
 			
-			URL objUrl = new URL(url);			
-			HashSet<String> urls = service.findTheUrls(objUrl);
-			
-			for( String foundUrl : urls ) {
-				
-				System.out.println(foundUrl);
-				
-			}
-			
-			return ResponseEntity.ok().build();
+			URL objUrl = new URL(crawlerDto.getUrl());			
+			HashSet<String> urls = crawledUrlService.findTheUrls(objUrl, crawlerDto.getDepth());						
+			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls);	
+						
+			return ResponseEntity.ok().body(savedCrawledUrl);
 			
 		} catch (MalformedURLException e) {
 			
@@ -72,14 +70,19 @@ public class UrlResource {
 	}
 	
 	@PostMapping(value="/find/spider")
-	public ResponseEntity<?> findAllBySpider(@RequestBody String url){
+	public ResponseEntity<CrawledUrl> findAllBySpider(@RequestBody CrawlerParameterDTO crawlerDto){
 		
 		//This method use a little more sophisticated way to find the available URLs in the
 		//specified URL
+		//http://www.netinstructions.com/how-to-make-a-simple-web-crawler-in-java/
+		
 		try {
 			
-			List<String> foundLinks = crawlerSpider.search(url, 20).getLinks();
-			return ResponseEntity.ok(foundLinks);			
+			URL objUrl = new URL(crawlerDto.getUrl());			
+			HashSet<String> urls = crawlerSpider.search(objUrl.toString(), crawlerDto.getDepth()).getLinks();
+			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls);	
+			
+			return ResponseEntity.ok().body(savedCrawledUrl);			
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -90,17 +93,17 @@ public class UrlResource {
 	}
 	
 	@PostMapping()
-	public List<Url> create(@RequestBody Url body){
+	public List<CrawledUrl> create(@RequestBody CrawledUrl body){
 		return null;		
 	}
 	
 	@PutMapping()
-	public List<Url> update(@RequestBody Url body){
+	public List<CrawledUrl> update(@RequestBody CrawledUrl body){
 		return null;
 	}
 	
 	@DeleteMapping()
-	public List<Url> delete(@RequestParam Integer id){
+	public List<CrawledUrl> delete(@RequestParam Integer id){
 		return null;
 	}
 	
