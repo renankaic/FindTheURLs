@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import com.renankaic.findtheurls.services.CrawledUrlService;
 
 @SpringBootApplication
+@ComponentScan
 public class FindTheUrLsApplication implements CommandLineRunner{
 	
 	@Autowired

@@ -29,6 +29,7 @@ public class SpiderWebCrawler {
 	   */
 	public SpiderLegWebCrawlerService search(String url, Integer numberOfPagesToSearch) {
 		
+		//Resets the Spider Legs
 		resetSpiderLeg();
 		
 		while(this.pagesVisited.size() < numberOfPagesToSearch)
@@ -81,6 +82,7 @@ public class SpiderWebCrawler {
 	private void resetSpiderLeg() {
 		
 		//Clear all links before start to crawl
+		//Otherwise, It will have some undesired results from other crawlings
 		spiderLeg.getLinks().clear();
 		pagesVisited.clear();
 		pagesToVisit.clear();

@@ -22,7 +22,6 @@ import com.renankaic.findtheurls.domain.CrawledUrl;
 import com.renankaic.findtheurls.domain.dto.CrawledUrlDTO;
 import com.renankaic.findtheurls.domain.dto.CrawlerParameterDTO;
 import com.renankaic.findtheurls.services.CrawledUrlService;
-import com.renankaic.findtheurls.services.crawlers.SpiderWebCrawler;
 
 @RestController
 @RequestMapping(value="/urls")
@@ -30,9 +29,6 @@ public class CrawlerResource {
 	
 	@Autowired
 	private CrawledUrlService crawledUrlService;
-	
-	@Autowired
-	private SpiderWebCrawler crawlerSpider;
 	
 	@GetMapping()
 	public ResponseEntity<List<CrawledUrl>> list() {
@@ -72,7 +68,7 @@ public class CrawlerResource {
 		try {
 			
 			URL objUrl = new URL(crawlerDto.getUrl());			
-			HashSet<String> urls = crawledUrlService.findTheUrls(objUrl, crawlerDto.getDepth());						
+			HashSet<String> urls = crawledUrlService.findTheUrlsBasicCrawler(objUrl, crawlerDto.getDepth());						
 			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls, crawlerDto.getSiteName());	
 		
 			//Transform to DTO
@@ -99,7 +95,7 @@ public class CrawlerResource {
 		try {
 			
 			URL objUrl = new URL(crawlerDto.getUrl());			
-			HashSet<String> urls = crawlerSpider.search(objUrl.toString(), crawlerDto.getDepth()).getLinks();
+			HashSet<String> urls = crawledUrlService.findTheUrlsSpiderCrawler(objUrl, crawlerDto.getDepth());
 			CrawledUrl savedCrawledUrl = crawledUrlService.saveCrawledUrl(objUrl, urls,crawlerDto.getSiteName());
 			
 			//Transform to DTO

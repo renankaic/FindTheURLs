@@ -38,15 +38,20 @@ public class SpiderLegWebCrawlerService {
 			
 			//Connects to the specified URL using the specified USER_AGENT
             Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
+            
+            //Gets the HTML Content
             this.htmlDocument = connection.get();
 
             System.out.println("Found a web page from URL: " + url);
 
+            //Gets all <a href/> on page
             Elements linksOnPage = htmlDocument.select("a[href]");
             System.out.println("Found " + linksOnPage.size() + " links in [" + url + "] URL");
             
+            //For each link, adds to the links List
             for(Element link : linksOnPage) {
             	
+            	//Checks if this link wasn't add before
             	if ( !this.links.contains(link.absUrl("href")) ) {
                     this.links.add(link.absUrl("href"));
             	}

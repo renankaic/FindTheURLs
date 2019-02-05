@@ -25,6 +25,7 @@ public class BasicWebCrawlerService {
     //Recursively gets the found URLs according to the specified depth
     public void getPageLinks(String URL, int depth) {
     	
+    	//Checks if the actual depth is before the desired depth
         if ((!links.contains(URL) && (depth < desiredDepth))) {
         	
             try {
@@ -36,9 +37,13 @@ public class BasicWebCrawlerService {
                 
                 //Get all links from the HTML content
                 Elements linksOnPage = document.select("a[href]");
-
+                
+                System.out.println("Found [" + linksOnPage.size() + "] links in [" + URL.toString() + "]");
+                
                 depth++;
                 for (Element page : linksOnPage) {
+                	
+                	//Recursively calls the method until the desired depth is reached
                     getPageLinks(page.attr("abs:href"), depth);
                 }
                 

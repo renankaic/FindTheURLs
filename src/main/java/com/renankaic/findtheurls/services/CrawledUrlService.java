@@ -14,6 +14,7 @@ import com.renankaic.findtheurls.domain.CrawledUrl;
 import com.renankaic.findtheurls.domain.FoundUrl;
 import com.renankaic.findtheurls.repositories.CrawledUrlRepository;
 import com.renankaic.findtheurls.services.crawlers.BasicWebCrawlerService;
+import com.renankaic.findtheurls.services.crawlers.SpiderWebCrawler;
 
 @Service
 public class CrawledUrlService {
@@ -22,7 +23,10 @@ public class CrawledUrlService {
 	private CrawledUrlRepository crawledUrlRepository;
 	
 	@Autowired
-	BasicWebCrawlerService basicWebCrawler;
+	BasicWebCrawlerService crawlerBasic;
+	
+	@Autowired
+	private SpiderWebCrawler crawlerSpider;
 	
 	public CrawledUrl find(Long id) {		
 		Optional<CrawledUrl> obj = crawledUrlRepository.findById(id);
@@ -99,15 +103,25 @@ public class CrawledUrlService {
 		
 	}
 	
-	public HashSet<String> findTheUrls( URL url, Integer depth ) {	
+	public HashSet<String> findTheUrlsBasicCrawler( URL url, Integer depth ) {	
 		
 		//Gets and clear all the strings inside the HashSet
 		//If I don't do this, for some reason, the HashSet comes with
 		//the previous found URLs
-		basicWebCrawler.getLinks().clear();
-		basicWebCrawler.setDesiredDepth(depth);
-		basicWebCrawler.getPageLinks(url.toString(), 1);
-		return basicWebCrawler.getLinks();
+		crawlerBasic.getLinks().clear();
+		
+		crawlerBasic.setDesiredDepth(depth);
+		
+		//Use the methods to crawl through the site searching for links
+		crawlerBasic.getPageLinks(url.toString(), 1);
+		
+		return crawlerBasic.getLinks();
+		
+	}
+	
+	public HashSet<String> findTheUrlsSpiderCrawler( URL url, Integer depth){		
+
+		return crawlerSpider.search(url.toString(), depth).getLinks();
 		
 	}
 }
