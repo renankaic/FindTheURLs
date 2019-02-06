@@ -1,0 +1,12 @@
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/services/CrawledUrlService.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/resources/CrawlerResource.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/domain/dto/CrawledUrlDTO.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/domain/CrawledUrl.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/services/crawlers/SpiderWebCrawler.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/FindTheUrLsApplication.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/domain/FoundUrl.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/repositories/FoundUrlRepository.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/services/crawlers/SpiderLegWebCrawlerService.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/services/crawlers/BasicWebCrawlerService.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/repositories/CrawledUrlRepository.java
+/home/renan/Documents/workspace-sts/FindTheURLs/src/main/java/com/renankaic/findtheurls/domain/dto/CrawlerParameterDTO.java

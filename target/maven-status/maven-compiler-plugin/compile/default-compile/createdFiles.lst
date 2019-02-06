@@ -1,0 +1,12 @@
+com/renankaic/findtheurls/domain/FoundUrl.class
+com/renankaic/findtheurls/domain/dto/CrawledUrlDTO.class
+com/renankaic/findtheurls/domain/dto/CrawlerParameterDTO.class
+com/renankaic/findtheurls/services/crawlers/BasicWebCrawlerService.class
+com/renankaic/findtheurls/services/crawlers/SpiderLegWebCrawlerService.class
+com/renankaic/findtheurls/FindTheUrLsApplication.class
+com/renankaic/findtheurls/services/CrawledUrlService.class
+com/renankaic/findtheurls/repositories/CrawledUrlRepository.class
+com/renankaic/findtheurls/repositories/FoundUrlRepository.class
+com/renankaic/findtheurls/services/crawlers/SpiderWebCrawler.class
+com/renankaic/findtheurls/resources/CrawlerResource.class
+com/renankaic/findtheurls/domain/CrawledUrl.class
